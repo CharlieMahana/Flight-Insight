@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "weather-scrape"
+version = "0.1.0"
+description = ""
+authors = ["Spaceface16518 <amrit.rathie@gmail.com>"]
+readme = "README.md"
+packages = [{include = "weather_scrape"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymongo = {extras = ["srv"], version = "^4.3.3"}
+polars = "^0.15.18"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
