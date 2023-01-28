@@ -6,9 +6,9 @@ Adafruit_MPU6050 mpu;
 Adafruit_Sensor *mpu_accel;
 
 float prev_x = 0, prev_y = 0, prev_z = 0;
-bool turbulence_flag = false;
 int counter_delay = 11;
 
+const int DELAY = 10;
 const int TURBULENCE_TOLERANCE = 6;
 const int buzzer = 13, rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -72,9 +72,6 @@ void setup(void) {
 }
 
 void loop() {
-  turbulence_flag = !turbulence_flag;
-
-  
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   mpu_accel->getEvent(&accel);
@@ -86,7 +83,7 @@ void loop() {
     counter_delay = 0;
   }
 
-  if (counter_delay < 10) {
+  if (counter_delay < DELAY) {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("TURBULENCE!");
