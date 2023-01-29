@@ -1,7 +1,11 @@
 <script>
     import { onMount } from 'svelte'
     import mapboxgl from "mapbox-gl";
+    import turf from 'turf';
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw' // default public access token
+
+    const departingCoordinates = [-97.0403, 32.8998];
+    const arrivingCoordinates = [-71.0096, 42.3656];
 
     onMount(() => {
         const map = new mapboxgl.Map({
@@ -13,6 +17,49 @@
         }).addControl(new mapboxgl.AttributionControl({
             compact: true,
         }));     
+
+        map.on('load', () => {
+            map.addSource('line', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': [departingCoordinates, arrivingCoordinates]
+                            }
+                        },
+                    ]
+                }
+            });
+
+            map.addLayer({
+                'id': 'line-animation',
+                'type': 'line',
+                'source': 'line',
+                'layout': {
+                'line-cap': 'round',
+                'line-join': 'round'
+                },
+                'paint': {
+                'line-color': '#000000',
+                'line-width': 2,
+                'line-opacity': 0.8
+                }
+            });
+
+            // create departing airport pin
+            const departure = document.createElement('div');
+            departure.className = 'marker';
+            new mapboxgl.Marker(departure).setLngLat(departingCoordinates).addTo(map);
+
+            // create arrival airport pin
+            const arrival = document.createElement('div');
+            arrival.className = 'marker';
+            new mapboxgl.Marker(arrival).setLngLat(arrivingCoordinates).addTo(map);
+        });
     })
 </script>
 
@@ -23,6 +70,17 @@
 
 <div>
     <div id="map"></div>
+    <style>
+        .marker {
+        background-image: url('https://www.iconpacks.net/icons/2/free-airport-location-icon-2959-thumb.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        top: -20px;
+        }
+    </style>
 </div>
 
 <style>
