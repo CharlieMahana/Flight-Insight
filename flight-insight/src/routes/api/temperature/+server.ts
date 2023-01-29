@@ -8,5 +8,6 @@ let col = db.collection('environment_data');
 
 export async function GET({}) {
     let data = await col.find().sort({_id:-1}).limit(1).toArray();
-    return new Response(JSON.stringify(data));
+    data = data[0];
+    return new Response(data.temperature);
 }
