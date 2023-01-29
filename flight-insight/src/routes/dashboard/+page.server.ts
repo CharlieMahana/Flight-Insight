@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ url, fetch, locals }) => {
-  const recordLocator = url.searchParams.get("recordLocator");
+  const recordLocator = url.searchParams.get("recordLocator")?.toUpperCase();
   // if (!recordLocator) return error(404, "Record not found");
 
   // load flight data from the database
