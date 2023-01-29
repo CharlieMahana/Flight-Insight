@@ -3,9 +3,10 @@ import serial
 import re
 import math
 import pymongo
+import struct
 
 # establish database connection
-client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster0.rpfddr7.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://<>:<>@cluster0.rpfddr7.mongodb.net/?retryWrites=true&w=majority")
 db = client['LiveFlightData']
 collection = db['turbulenceReadings']
 
@@ -32,6 +33,10 @@ while True:
             math.pow(float(data[1]), 2) + \
             math.pow(float(data[2]), 2))
         collection.insert_many([{"relative: ": magnitude - prev, "emov": mov - magnitude}])
+        
+        if (magnitude - prev > 5):
+            num = 1
+            ser.write(num.to_bytes(1, 'big'))
         print(f"{magnitude - prev},             {mov-magnitude}")
         prev = magnitude
         mov = 0.5 * mov + 0.5 * magnitude
