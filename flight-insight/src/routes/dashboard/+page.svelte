@@ -12,9 +12,6 @@
     mapboxgl.accessToken =
         "pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw"; // default public access token
 
-    const departingCoordinates = [-97.0403, 32.8998];
-    const arrivingCoordinates = [-71.0096, 42.3656];
-
     export let data: PageData;
 
     export let form: FormData;
@@ -43,8 +40,8 @@
                             geometry: {
                                 type: "LineString",
                                 coordinates: [
-                                    departingCoordinates,
-                                    arrivingCoordinates,
+                                    [data.flight.origin.location.longitude, data.flight.origin.location.latitude],
+                                    [data.flight.destination.location.longitude, data.flight.destination.location.latitude],
                                 ],
                             },
                         },
@@ -71,14 +68,14 @@
             const departure = document.createElement("div");
             departure.className = "marker";
             new mapboxgl.Marker(departure)
-                .setLngLat(departingCoordinates)
+                .setLngLat([data.flight.origin.location.longitude, data.flight.origin.location.latitude])
                 .addTo(map);
 
             // create arrival airport pin
             const arrival = document.createElement("div");
             arrival.className = "marker";
             new mapboxgl.Marker(arrival)
-                .setLngLat(arrivingCoordinates)
+                .setLngLat([data.flight.destination.location.longitude, data.flight.destination.location.latitude])
                 .addTo(map);
 
             // add weather layer
