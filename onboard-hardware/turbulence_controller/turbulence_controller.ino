@@ -2,6 +2,8 @@
 #include <Adafruit_MPU6050.h>
 #include <LiquidCrystal.h>
 
+enum CODES { CLEAR, TURBULENT };
+
 Adafruit_MPU6050 mpu;
 Adafruit_Sensor *mpu_accel;
 
@@ -9,7 +11,6 @@ float prev_x = 0, prev_y = 0, prev_z = 0;
 int counter_delay = 11;
 
 const int DELAY = 10;
-const int TURBULENCE_TOLERANCE = 6;
 const int buzzer = 13, rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
@@ -75,12 +76,17 @@ void loop() {
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   mpu_accel->getEvent(&accel);
-  bool is_turbulent = abs(prev_x - accel.acceleration.x) >= TURBULENCE_TOLERANCE 
-                  || abs(prev_y - accel.acceleration.y) >= TURBULENCE_TOLERANCE 
-                  || abs(prev_z - accel.acceleration.z) >= TURBULENCE_TOLERANCE;
+  // Serial.println(Serial.read(), DEC);
 
-  if (is_turbulent) {
-    counter_delay = 0;
+  // control
+  if (Serial.available() > 0) {
+    switch (Serial.read()) {
+      case TURBULENT:
+        counter_delay = 0;
+        break;
+      default:
+        break;
+    }
   }
 
   if (counter_delay < DELAY) {
