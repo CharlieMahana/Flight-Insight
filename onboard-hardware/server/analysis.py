@@ -4,7 +4,7 @@ from matplotlib import style
 import pymongo
 import threading
 
-client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster0.rpfddr7.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://<>:<>@cluster0.rpfddr7.mongodb.net/?retryWrites=true&w=majority")
 db = client['LiveFlightData']
 collection = db['turbulenceReadings']
 
