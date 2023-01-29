@@ -5,7 +5,7 @@ import math
 import pymongo
 
 # establish database connection
-client = pymongo.MongoClient("mongodb+srv://airline:airline@turbulencedata.ypuf3.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://<username>:<password>@cluster0.rpfddr7.mongodb.net/?retryWrites=true&w=majority")
 db = client['LiveFlightData']
 collection = db['turbulenceReadings']
 
