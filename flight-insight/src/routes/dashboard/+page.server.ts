@@ -1,5 +1,5 @@
 import { env } from "$env/dynamic/private";
-import { error } from "@sveltejs/kit";
+import { error, fail } from "@sveltejs/kit";
 import { MongoClient } from "mongodb";
 import type { PageServerLoad } from "./$types";
 
@@ -56,4 +56,29 @@ export const load: PageServerLoad = async ({ url, fetch, locals }) => {
     originWeather,
     destinationWeather,
   };
+};
+
+export const actions: Actions = {
+  // default action sends report to the flight attendants
+  default: async ({ request }) => {
+    // get report from user
+    const form = await request.formData();
+    const seat = form.get("seat");
+    const complaint = form.get("complaint");
+    if (!seat || !complaint)
+      return fail(400, { seat, complaint, missing: true });
+
+    const client = await new MongoClient(env.MONGODB_URI, {}).connect();
+    const db = client.db("inflight_data");
+    const passenger_requests = db.collection("passenger_requests");
+    await passenger_requests.insertOne({
+      seat,
+      complaint,
+      timestamp: new Date(),
+    });
+
+    return {
+      success: true,
+    };
+  },
 };

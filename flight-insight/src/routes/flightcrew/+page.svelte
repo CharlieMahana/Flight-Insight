@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte'
     import mapboxgl from "mapbox-gl";
     import turf from 'turf';
@@ -6,6 +6,7 @@
     import TurbulenceChart from "$lib/components/TurbulenceChart.svelte";
     import HumidityChart from "$lib/components/HumidityChart.svelte";
     import TemperatureChart from "$lib/components/TemperatureChart.svelte";
+    import A230Map from '$lib/components/A230Map.svelte';
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw' // default public access token
 
@@ -89,6 +90,19 @@
             );
         });
     })
+
+    function setSeat(evt:MouseEvent){
+        const seatNum = evt.target?.value;
+        const seat = document.getElementById(seatNum);
+        seat?.setAttribute("fill", "#ff0000");
+        seat?.setAttribute("class", "animate-pulse");
+    }
+
+    function unsetSeat(seatNumber:string){
+        const seat = document.getElementById(seatNumber);
+        seat?.setAttribute("fill", "#D9D9D9");
+        seat?.setAttribute("class", "");
+    }
 </script>
 
 <svelte:head>
@@ -97,6 +111,22 @@
 </svelte:head>
 
 <div class="verticalContainer">
+    <div>
+        <table>
+            <!-- head -->
+            <thead>
+                <tr>
+                <th></th>
+                <th>Seat</th>
+                <th>Problem</th>
+                <th>Toggle Seat Signal</th>
+                <th>Remove Issue</th>
+                </tr>
+                <tr>
+                </tr>
+            </thead>
+        </table>
+    </div>
     <div id="map"></div>
     <style>
         .marker {
@@ -114,6 +144,10 @@
         <HumidityChart></HumidityChart>
         <TemperatureChart></TemperatureChart>
     </div>
+    <div>
+        <A230Map></A230Map>
+    </div>
+    <button on:click="{setSeat}" value="C17">Seat</button>
 </div>
 
 <style>
