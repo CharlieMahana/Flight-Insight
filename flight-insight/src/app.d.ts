@@ -5,9 +5,9 @@ import type { Db } from "mongodb";
 declare global {
   namespace App {
     // interface Error {}
-    interface Locals {
-      db: Db;
-    }
+    // interface Locals {
+    //   db: Db;
+    // }
     // interface PageData {}
     // interface Platform {}
   }

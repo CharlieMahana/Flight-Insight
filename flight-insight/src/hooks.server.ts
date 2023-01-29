@@ -1,5 +1,5 @@
 import type { Handle } from "@sveltejs/kit";
-import clientPromise from "$lib/server/db";
+// import clientPromise from "$lib/server/db";
 import init from "$lib/server/db/init";
 import { SvelteKitAuth } from "@auth/sveltekit";
 import { sequence } from "@sveltejs/kit/hooks";
@@ -38,12 +38,12 @@ const auth = SvelteKitAuth({
 init();
 
 const db: Handle = async ({ event, resolve }) => {
-    // inject mongo database as db
-    const client = await clientPromise;
-    const db = client.db();
-    // @ts-ignore
-    event.locals.db = db;
-
+    // // inject mongo database as db
+    // const client = await clientPromise;
+    // const db = client.db();
+    // // @ts-ignore
+    // event.locals.db = db;
+    //
     const response = await resolve(event);
     return response;
 };
