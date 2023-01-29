@@ -7,7 +7,6 @@
 
     const departingCoordinates = [-97.0403, 32.8998];
     const arrivingCoordinates = [-71.0096, 42.3656];
-
     onMount(() => {
         const map = new mapboxgl.Map({
             container: "map",
