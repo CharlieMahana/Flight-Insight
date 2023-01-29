@@ -21,8 +21,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@auth/core": "^0.3.0",
+		"@auth/sveltekit": "^0.2.0",
 		"autoprefixer": "^10.4.13",
 		"daisyui": "^2.49.0",
+		"mongodb": "^4.13.0",
 		"postcss": "^8.4.21"
 	}
 }

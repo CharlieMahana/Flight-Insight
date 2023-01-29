@@ -17,20 +17,18 @@
           <form class="w-full m-auto justify-center items-center text-center" method="POST" action="?/login">
             <input name="aadvantage" type="text" placeholder="AAdvantage Number" class="input input-xs w-full max-w-xs bg-base-200 text-neutral m-2" />
             <input name="password" type="password" placeholder="Password" class="input input-xs w-full max-w-xs bg-base-200 text-neutral m-2" />
-            <input type="button" value="Log In" class="btn btn-primary btn-sm m-auto" formaction="?/login"/>
+            <input type="submit" value="Log In" class="btn btn-primary btn-sm m-auto" formaction="?/login"/>
+
           </form>
         {:else}
         <form class="w-full m-auto justify-center items-center text-center" method="POST" action="?/search">
           <input name="search" type="text" placeholder="Search" class="input input-xs w-full max-w-xs bg-base-200 text-neutral m-2" />
-          <input type="button" value="Search" class="btn btn-primary btn-sm m-auto" />
+          <input type="submit" value="Search" class="btn btn-primary btn-sm m-auto" />
         </form>
         {/if}
       </div>
     </div>
   </div>
-  {#if form?.success}
-    <p>Successfully filled form</p>
-  {/if}
 </body>
 
 <style lang="postcss">
@@ -47,6 +45,7 @@
 
 <script>
   import AmericanIcon from "../lib/components/AmericanIcon.svelte";
+  import { signIn, signOut } from '@auth/sveltekit/client';
   let isSignIn = true;
 
   /** @type {import('./$types').ActionData} */
@@ -54,11 +53,9 @@
 
   function handleSignInClick(){
     isSignIn=true;
-    console.log(isSignIn);
   }
 
   function handleFindFlightClick(){
     isSignIn=false;
-    console.log(isSignIn);
   }
 </script>
