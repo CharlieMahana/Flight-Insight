@@ -6,6 +6,7 @@
     import AmericanIcon from "$lib/components/AmericanIcon.svelte";
     import A230Map from "$lib/components/A230Map.svelte";
     import type { PageData } from "../$types";
+    import ReportForm from "$lib/components/ReportForm.svelte";
     mapboxgl.accessToken =
         "pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw"; // default public access token
 
@@ -14,6 +15,7 @@
 
     export let data: PageData;
 
+    export let form: FormData;
 
     onMount(() => {
         const map = new mapboxgl.Map({
@@ -77,7 +79,6 @@
                 .setLngLat(arrivingCoordinates)
                 .addTo(map);
 
-
             // add weather layer
             const timeSlices = await fetch(
                 "https://api.weather.com/v3/TileServer/series/productSet/PPAcore?apiKey=2ec2232d72f1484282232d72f198421d"
@@ -116,8 +117,6 @@
     // };
     // return min;
     // );
-
-    
 </script>
 
 <svelte:head>
@@ -171,10 +170,21 @@
                 </div>
             </div>
             <div class="w-3/4 m-auto mb-10">
-                <A230Map></A230Map>
+                <A230Map />
             </div>
             <div class="w-3/4 m-auto mb-10">
-                <A230Map></A230Map>
+                <A230Map />
+            </div>
+
+            <div class="hero">
+                <div class="hero-content">
+                    <ReportForm
+                        seat={form?.seat ?? ""}
+                        complaint={form?.complaint ?? ""}
+                        missing={form?.missing}
+                        success={form?.success}
+                    />
+                </div>
             </div>
         </div>
 
@@ -188,4 +198,3 @@
         </style>
     </div>
 </div>
-
