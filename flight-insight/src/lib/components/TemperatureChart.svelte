@@ -44,7 +44,7 @@
         },
         colors: ['#000000'],
         title: {
-            text: 'Temperature'
+            text: 'Temperature (F)'
         }
     }
 

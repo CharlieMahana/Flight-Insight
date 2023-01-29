@@ -44,7 +44,7 @@
         },
         colors: ['#000000'],
         title: {
-            text: 'Humidity'
+            text: 'Humidity (%)'
         }
     }
 

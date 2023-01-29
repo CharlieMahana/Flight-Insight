@@ -32,9 +32,9 @@
         },
         yaxis: {
             min: 0,
-            max: 20,
-            range: 20,
-            decimalsInFloat: false,
+            max: 2,
+            range: 2,
+            decimalsInFloat: true,
             labels: {
                 show: true,
             }
@@ -44,7 +44,7 @@
         },
         colors: ['#000000'],
         title: {
-            text: 'Turbulence Delta (m/s^2)'
+            text: 'Turbulence (G\'s)'
         }
     }
 
@@ -55,7 +55,7 @@
         window.setInterval(async () => {
             let info = await fetch("http://localhost:5173/api/turbulence");
             info = await info.json()
-            data.push(parseFloat(info));
+            data.push(parseFloat(info/10));
             chart.updateSeries([{
                 data: data
             }]);
