@@ -12,6 +12,11 @@
 
     const departingCoordinates = [-97.0403, 32.8998];
     const arrivingCoordinates = [-71.0096, 42.3656];
+
+    export let data: PageData;
+
+    data.info = [];
+
     onMount(() => {
         const map = new mapboxgl.Map({
             container: "map",
@@ -89,7 +94,15 @@
                 },
             );
         });
+
+
+        window.setInterval(async () => {
+            let info = await fetch("/api/passengerRequest");
+            info = await info.json()
+            data.info = info;
+        }, 1000);
     })
+
 
     function setSeat(evt:MouseEvent){
         const seatNum = evt.target?.value;
@@ -112,18 +125,24 @@
 
 <div class="verticalContainer">
     <div>
-        <table>
+        <table class="table table-zebra w-full">
             <!-- head -->
             <thead>
                 <tr>
-                <th></th>
                 <th>Seat</th>
                 <th>Problem</th>
                 <th>Toggle Seat Signal</th>
                 <th>Remove Issue</th>
                 </tr>
-                <tr>
-                </tr>
+                
+                    {#each data.info as request}
+                    <tr>
+                        <td>{request.seat}</td>
+                        <td>{request.complaint}</td>
+                        <td><button on:click={setSeat} value={request.seat} class="btn btn-primary">Show Seat</button></td>
+                        <td><form method="POST"><input hidden type="hidden" name="_id" value={request._id} /><input type="submit" class="btn btn-primary" value="Resolve"/></form></td>
+                        </tr>
+                    {/each}
             </thead>
         </table>
     </div>

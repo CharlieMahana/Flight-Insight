@@ -3,6 +3,7 @@
   export let complaint: string;
   export let success = false;
   export let missing = false;
+  export let flightnum: number;
 </script>
 
 <form class="form-control mb-2 p-2" method="post">
@@ -28,6 +29,7 @@
       <option value="other">Call Flight Attendant</option>
     </select>
   </label>
+  <input name="flightnum" bind:value={flightnum} hidden />
   <button class="btn btn-primary mb-3" type="submit">Submit</button>
 
   {#if success}

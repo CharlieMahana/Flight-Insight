@@ -7,6 +7,7 @@
     import A230Map from "$lib/components/A230Map.svelte";
     import type { PageData } from "../$types";
     import ReportForm from "$lib/components/ReportForm.svelte";
+    import { page } from "$app/stores";
     mapboxgl.accessToken =
         "pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw"; // default public access token
 
@@ -103,6 +104,12 @@
                 },
             });
         });
+
+        window.setInterval(async () => {
+            let info = await fetch("/api/turbulence");
+            info = await info.json()
+            data.info = parseFloat(info/10);
+        }, 1000);
     });
 
     //   const now = new Date();
@@ -138,6 +145,10 @@
         </div>
         <div />
     </div>
+    {#if data.info > 0.6}
+        <div class="alert alert-error mt-2"><p>Turbulance Detected! Please remain in your seat and fasten your seatbelt!</p></div>       
+    {/if}
+
     <div>
         <div>
             <div id="map" class="w-3/4 h-64 md:max-h-[500] " />
@@ -156,24 +167,20 @@
                 <div class="card bg-base-200 w-full h-96 m-2 p-4">
                     <p class="text-xl">Departure Weather</p>
                     <p>{data.originWeather.temperature}&deg;</p>
-                    {#if data.originWeather.precipitation > 0}
-                        <img src="/weather/rainy-2.svg" alt="rainy" />
-                    {:else if data.originWeather.cloudcover > 50}
-                        <img src="/weather/cloudy-day-2.svg" alt="cloudy day" />
-                    {:else}
-                        <img src="/weather/day.svg" alt="clear" />
-                    {/if}
+                    <div class="w-64 h-64">
+                        {#if data.originWeather.precipitation > 0}
+                            <img src="/weather/rainy-2.svg" alt="rainy" />
+                        {:else if data.originWeather.cloudcover > 50}
+                            <img src="/weather/cloudy-day-2.svg" alt="cloudy day" />
+                        {:else}
+                            <img src="/weather/day.svg" alt="clear" />
+                        {/if}
+                    </div>
                 </div>
                 <div class="card bg-base-200 w-full h-96 m-2 p-4">
                     <p class="text-xl">Arrival Weather</p>
                     <p>{data.destinationWeather.temperature}&deg;</p>
                 </div>
-            </div>
-            <div class="w-3/4 m-auto mb-10">
-                <A230Map />
-            </div>
-            <div class="w-3/4 m-auto mb-10">
-                <A230Map />
             </div>
 
             <div class="hero">
@@ -181,6 +188,7 @@
                     <ReportForm
                         seat={form?.seat ?? ""}
                         complaint={form?.complaint ?? ""}
+                        flightnum={$page.data.flight.flightNumber}
                         missing={form?.missing}
                         success={form?.success}
                     />
