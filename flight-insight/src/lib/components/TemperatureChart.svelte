@@ -6,7 +6,8 @@
 
     const options = {
         series: [{
-            name: "Desktops",
+            name: "temperature",
+            id: "temperature",
             data: data,
         }],
         chart: {
@@ -24,22 +25,31 @@
             enabled: false,
         },
         xaxis: {
-            range: 20,
+            range: 250,
+            labels: {
+                show: false,
+            }
         },
         yaxis: {
-            max: 5,
+            min: 50,
+            max: 100,
+            range: 50,
+            decimalsInFloat: false,
+            labels: {
+                show: true,
+            }
         },
         stroke: {
             curve: 'straight',
         },
         colors: ['#000000'],
         title: {
-            text: 'Turbulence Delta (m/s^2)'
+            text: 'Temperature'
         }
     }
 
     onMount(() => {
-        let chart = new ApexCharts(document.querySelector("#turbulenceChart"), options);
+        let chart = new ApexCharts(document.querySelector("#temperatureChart"), options);
         chart.render();
 
         window.setInterval(async () => {
@@ -49,12 +59,12 @@
             chart.updateSeries([{
                 data: data
             }]);
-        }, 100);
+        }, 1000);
     });
     
 </script>
 
-<div id="turbulenceChart"></div>
+<div id="temperatureChart"></div>
 
 <style>
 

@@ -6,7 +6,8 @@
 
     const options = {
         series: [{
-            name: "Desktops",
+            name: "turbulence",
+            id: "turbulence",
             data: data,
         }],
         chart: {
@@ -24,10 +25,19 @@
             enabled: false,
         },
         xaxis: {
-            range: 20,
+            range: 250,
+            labels: {
+                show: false,
+            }
         },
         yaxis: {
-            max: 30,
+            min: 0,
+            max: 40,
+            range: 40,
+            decimalsInFloat: false,
+            labels: {
+                show: true,
+            }
         },
         stroke: {
             curve: 'straight',
@@ -57,5 +67,4 @@
 <div id="turbulenceChart"></div>
 
 <style>
-
 </style>
