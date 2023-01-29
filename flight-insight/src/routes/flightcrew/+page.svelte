@@ -128,7 +128,7 @@
     div {
         display: flex;
         width: 1000px;
-        margin: auto
+        margin: auto;
     }
 
     .verticalContainer {
