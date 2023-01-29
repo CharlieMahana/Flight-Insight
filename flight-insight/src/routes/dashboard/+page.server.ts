@@ -20,40 +20,36 @@ export const load: PageServerLoad = async ({ url, fetch, locals }) => {
   const destination = flight?.destination.location;
 
   // get weather data from meteo api
-  const originWeather = await fetch(
+  const originWeather = fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${origin.latitude}&longitude=${origin.longitude}&hourly=temperature_2m,precipitation,cloudcover`
-  ).then((res) => res.json());
-  // .then((res) => {
-  //   const now = new Date();
-  //   const min = res.hourly.time
-  //     .map((hour: string) => new Date(hour).getTime() - now.getTime())
-  //     .filter((diff: number) => diff > 0)
-  //     .min();
-  //   const index = res.hourly.time.indexOf(now.getTime() + min);
-  //   return {
-  //     temperature: res.hourly.temperature_2m[index],
-  //     precipitation: res.hourly.precipitation[index],
-  //     cloudcover: res.hourly.cloudcover[index],
-  //   };
-  // });
-  const destinationWeather = await fetch(
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      const departureHour = new Date(flight.departureTime).getHours();
+      const index = res.hourly.time.findIndex(
+        (time: string) => new Date(time).getHours() === departureHour
+      );
+      return {
+        temperature: res.hourly.temperature_2m[index] * 1.8 + 32,
+        precipitation: res.hourly.precipitation[index] / 25.4,
+        cloudcover: res.hourly.cloudcover[index] / 100,
+      };
+    });
+  const destinationWeather = fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${destination.latitude}&longitude=${destination.longitude}&hourly=temperature_2m,precipitation,cloudcover`
-  ).then((res) => res.json());
-  // .then((res: any) => {
-  //   const now = new Date();
-  //   const min = res.hourly.time.map(
-  //     (hour: string | null) => new Date(hour || now).getTime() - now.getTime()
-  //   );
-  //   .filter((diff: number) => diff > 0)
-  // .min();
-  // const index = res.hourly.time.indexOf(now.getTime() + min);
-  // return {
-  //   temperature: res.hourly.temperature_2m[index],
-  //   precipitation: res.hourly.precipitation[index],
-  //   cloudcover: res.hourly.cloudcover[index],
-  // };
-  // return min;
-  // });
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      const arrivalHour = new Date(flight.arrivalTime).getHours();
+      const index = res.hourly.time.findIndex(
+        (time: string) => new Date(time).getHours() === arrivalHour
+      );
+      return {
+        temperature: res.hourly.temperature_2m[index] * 1.8 + 32,
+        precipitation: res.hourly.precipitation[index] / 25.4,
+        cloudcover: res.hourly.cloudcover[index] / 100,
+      };
+    });
 
   return {
     flight,

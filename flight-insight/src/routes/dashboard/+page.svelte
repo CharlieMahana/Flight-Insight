@@ -1,17 +1,17 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import mapboxgl from "mapbox-gl";
     import turf from "turf";
     import { time_ranges_to_array } from "svelte/internal";
     import AmericanIcon from "$lib/components/AmericanIcon.svelte";
+    import type { PageData } from "../$types";
     mapboxgl.accessToken =
         "pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw"; // default public access token
 
     const departingCoordinates = [-97.0403, 32.8998];
     const arrivingCoordinates = [-71.0096, 42.3656];
 
-    /** @type {import('./$types').PageData} */
-    export let data;
+    export let data: PageData;
 
     onMount(() => {
         const map = new mapboxgl.Map({
@@ -100,6 +100,19 @@
             });
         });
     });
+
+    //   const now = new Date();
+    //   const destinationWeather = data.destinationWeather.hourly.time.map(
+    //   (hour: string | null) => new Date(hour || now).getTime() - now.getTime()) .filter((diff: number) => diff > 0)
+    // .min();
+    // const index = res.hourly.time.indexOf(now.getTime() + min);
+    // return {
+    //   temperature: res.hourly.temperature_2m[index],
+    //   precipitation: res.hourly.precipitation[index],
+    //   cloudcover: res.hourly.cloudcover[index],
+    // };
+    // return min;
+    // );
 </script>
 
 <svelte:head>
@@ -138,18 +151,18 @@
             <div id="map" class="w-3/4 h-64 flex flex-col md:flex-row">
                 <div class="card bg-base-200 w-full h-96 m-2 p-4">
                     <p class="text-xl">Departure Weather</p>
-                    <p>{data.originWeather.temperature}</p>
+                    <p>{data.originWeather.temperature}&deg;</p>
                     {#if data.originWeather.precipitation > 0}
-                        <img src="../../static/weather/rainy-2.svg" />
+                        <img src="/weather/rainy-2.svg" alt="rainy" />
                     {:else if data.originWeather.cloudcover > 50}
-                        <img src="../../static/weather/cloudy-day-2.svg" />
+                        <img src="/weather/cloudy-day-2.svg" alt="cloudy day" />
                     {:else}
-                        <img src="../../static/weather/day.svg" />
+                        <img src="/weather/day.svg" alt="clear" />
                     {/if}
                 </div>
                 <div class="card bg-base-200 w-full h-96 m-2 p-4">
                     <p class="text-xl">Arrival Weather</p>
-                    <p>{data.destinationWeather.temperature}</p>
+                    <p>{data.destinationWeather.temperature}&deg;</p>
                 </div>
             </div>
         </div>
