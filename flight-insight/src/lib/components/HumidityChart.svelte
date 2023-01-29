@@ -1,0 +1,61 @@
+<script lang='ts'>
+    import ApexCharts from "apexcharts";
+    import { onMount } from "svelte";
+
+    let data = [];
+
+    const options = {
+        series: [{
+            name: "Desktops",
+            data: data,
+        }],
+        chart: {
+            type: 'line',
+            height: '350px',
+            animations: {
+                enabled: true,
+                easing: 'linear',
+                dynamicAnimation: {
+                    speed: 1000
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        xaxis: {
+            range: 20,
+        },
+        yaxis: {
+            max: 5,
+        },
+        stroke: {
+            curve: 'straight',
+        },
+        colors: ['#000000'],
+        title: {
+            text: 'Turbulence Delta (m/s^2)'
+        }
+    }
+
+    onMount(() => {
+        let chart = new ApexCharts(document.querySelector("#turbulenceChart"), options);
+        chart.render();
+
+        window.setInterval(async () => {
+            let info = await fetch("http://localhost:5173/api/humidity");
+            info = await info.json()
+            data.push(parseFloat(info));
+            chart.updateSeries([{
+                data: data
+            }]);
+        }, 100);
+    });
+    
+</script>
+
+<div id="turbulenceChart"></div>
+
+<style>
+
+</style>
