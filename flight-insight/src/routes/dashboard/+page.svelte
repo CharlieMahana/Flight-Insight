@@ -14,6 +14,7 @@
 
     export let data: PageData;
 
+
     onMount(() => {
         const map = new mapboxgl.Map({
             container: "map",
@@ -75,6 +76,7 @@
             new mapboxgl.Marker(arrival)
                 .setLngLat(arrivingCoordinates)
                 .addTo(map);
+
 
             // add weather layer
             const timeSlices = await fetch(
@@ -186,3 +188,4 @@
         </style>
     </div>
 </div>
+
