@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@auth/core": "^0.3.0",
 		"@auth/sveltekit": "^0.2.0",
+		"apexcharts": "^3.36.3",
 		"autoprefixer": "^10.4.13",
 		"daisyui": "^2.49.0",
 		"mapbox-gl": "^2.12.0",
