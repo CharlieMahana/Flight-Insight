@@ -13,6 +13,8 @@
     <input
       class="input bg-base-200 w-full"
       placeholder="69A"
+      pattern="[0-9][0-9][A-Z]"
+      required
       name="seat"
       bind:value={seat}
     />
