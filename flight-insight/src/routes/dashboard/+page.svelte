@@ -2,6 +2,7 @@
     import { onMount } from 'svelte'
     import mapboxgl from "mapbox-gl";
     import turf from 'turf';
+    import { time_ranges_to_array } from 'svelte/internal';
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw' // default public access token
 
     const departingCoordinates = [-97.0403, 32.8998];
@@ -18,7 +19,7 @@
             compact: true,
         }));     
 
-        map.on('load', () => {
+        map.on('load', async () => {
             map.addSource('line', {
                 'type': 'geojson',
                 'data': {
@@ -59,6 +60,30 @@
             const arrival = document.createElement('div');
             arrival.className = 'marker';
             new mapboxgl.Marker(arrival).setLngLat(arrivingCoordinates).addTo(map);
+
+            // add weather layer
+            const timeSlices = await fetch(
+                "https://api.weather.com/v3/TileServer/series/productSet/PPAcore?apiKey=2ec2232d72f1484282232d72f198421d"
+            );
+            const weatherData = await timeSlices.json()
+            const time = weatherData.seriesInfo.radar.series[0].ts;
+            map.addSource('twcRadar', {
+                type: 'raster',
+                tiles: [
+                    'https://api.weather.com/v3/TileServer/tile/radar?ts=' + time + '&xyz={x}:{y}:{z}&apiKey=2ec2232d72f1484282232d72f198421d'
+                ],
+                tileSize: 256,
+            });
+            map.addLayer(
+                {
+                    id: 'radar',
+                    type: 'raster',
+                    source: 'twcRadar',
+                    paint: {
+                        'raster-opacity': 0.7,
+                    },
+                },
+            );
         });
     })
 </script>
