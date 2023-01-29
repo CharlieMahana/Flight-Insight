@@ -4,6 +4,7 @@
     import turf from "turf";
     import { time_ranges_to_array } from "svelte/internal";
     import AmericanIcon from "$lib/components/AmericanIcon.svelte";
+    import A230Map from "$lib/components/A230Map.svelte";
     import type { PageData } from "../$types";
     mapboxgl.accessToken =
         "pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw"; // default public access token
@@ -113,6 +114,8 @@
     // };
     // return min;
     // );
+
+    
 </script>
 
 <svelte:head>
@@ -164,6 +167,12 @@
                     <p class="text-xl">Arrival Weather</p>
                     <p>{data.destinationWeather.temperature}&deg;</p>
                 </div>
+            </div>
+            <div class="w-3/4 m-auto mb-10">
+                <A230Map></A230Map>
+            </div>
+            <div class="w-3/4 m-auto mb-10">
+                <A230Map></A230Map>
             </div>
         </div>
 
