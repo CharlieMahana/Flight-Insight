@@ -11,7 +11,7 @@
   <label class="mb-3 input-group">
     <span>Seat</span>
     <input
-      class="input bg-base-200"
+      class="input bg-base-200 w-full"
       placeholder="69A"
       name="seat"
       bind:value={seat}
