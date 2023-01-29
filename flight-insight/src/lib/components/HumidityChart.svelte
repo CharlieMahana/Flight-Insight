@@ -67,5 +67,8 @@
 <div id="humidityChart"></div>
 
 <style>
-
+    div {
+        width: 100%;
+        margin: 20px;
+    }
 </style>

@@ -32,8 +32,8 @@
         },
         yaxis: {
             min: 0,
-            max: 40,
-            range: 40,
+            max: 20,
+            range: 20,
             decimalsInFloat: false,
             labels: {
                 show: true,
@@ -67,4 +67,8 @@
 <div id="turbulenceChart"></div>
 
 <style>
+    div {
+        width: 100%;
+        margin: 20px;
+    }
 </style>
