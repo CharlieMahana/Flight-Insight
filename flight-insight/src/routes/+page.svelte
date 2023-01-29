@@ -21,8 +21,8 @@
 
           </form>
         {:else}
-        <form class="w-full m-auto justify-center items-center text-center" method="POST" action="?/search">
-          <input name="search" type="text" placeholder="Search" class="input input-xs w-full max-w-xs bg-base-200 text-neutral m-2" />
+        <form class="w-full m-auto justify-center items-center text-center" method="GET" action="/dashboard">
+          <input name="recordLocator" type="text" placeholder="Search" class="input input-xs w-full max-w-xs bg-base-200 text-neutral m-2" />
           <input type="submit" value="Search" class="btn btn-primary btn-sm m-auto" />
         </form>
         {/if}
