@@ -7,6 +7,7 @@
     import HumidityChart from "$lib/components/HumidityChart.svelte";
     import TemperatureChart from "$lib/components/TemperatureChart.svelte";
     import A230Map from '$lib/components/A230Map.svelte';
+    import AmericanIcon from '$lib/components/AmericanIcon.svelte';
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcmxpZW1haGFuYSIsImEiOiJja3FicmNhOWQwZDQwMnVvZW5pd3BnNGc4In0._TBwk5GaE5qqih2pilaLNw' // default public access token
 
@@ -38,7 +39,8 @@
                             'type': 'Feature',
                             'geometry': {
                                 'type': 'LineString',
-                                'coordinates': [departingCoordinates, arrivingCoordinates]
+                                'coordinates': [[data.flight.origin.location.longitude, data.flight.origin.location.latitude],
+                                    [data.flight.destination.location.longitude, data.flight.destination.location.latitude]]
                             }
                         },
                     ]
@@ -63,12 +65,12 @@
             // create departing airport pin
             const departure = document.createElement('div');
             departure.className = 'marker';
-            new mapboxgl.Marker(departure).setLngLat(departingCoordinates).addTo(map);
+            new mapboxgl.Marker(departure).setLngLat([data.flight.origin.location.longitude, data.flight.origin.location.latitude]).addTo(map);
 
             // create arrival airport pin
             const arrival = document.createElement('div');
             arrival.className = 'marker';
-            new mapboxgl.Marker(arrival).setLngLat(arrivingCoordinates).addTo(map);
+            new mapboxgl.Marker(arrival).setLngLat([data.flight.destination.location.longitude, data.flight.destination.location.latitude]).addTo(map);
 
             // add weather layer
             const timeSlices = await fetch(
@@ -122,7 +124,15 @@
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css" rel='stylesheet' />
     <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
 </svelte:head>
-
+<div class="w-screen bg-primary h-16 flex ">
+    <div class="flex flex-row align-middle text-center ">
+        <div class="w-12 h-12 mr-4 m-auto ml-4">
+            <AmericanIcon />
+        </div>
+        <p class="align-middle m-auto text-base-100">Flight Insight</p>
+    </div>
+    <div />
+</div>
 <div class="verticalContainer">
     <div>
         <table class="table table-zebra w-full">
@@ -134,17 +144,19 @@
                 <th>Toggle Seat Signal</th>
                 <th>Remove Issue</th>
                 </tr>
-                
-                    {#each data.info as request}
-                    <tr>
-                        <td>{request.seat}</td>
-                        <td>{request.complaint}</td>
-                        <td><button on:click={setSeat} value={request.seat} class="btn btn-primary">Show Seat</button></td>
-                        <td><form method="POST"><input hidden type="hidden" name="_id" value={request._id} /><input type="submit" class="btn btn-primary" value="Resolve"/></form></td>
-                        </tr>
-                    {/each}
             </thead>
+                {#each data.info as request}
+                <tr>
+                    <td>{request.seat}</td>
+                    <td>{request.complaint}</td>
+                    <td><button on:click={setSeat} value={request.seat} class="btn btn-primary">Show Seat</button></td>
+                    <td><form method="POST"><input hidden type="hidden" name="_id" value={request._id} /><input type="submit" class="btn btn-primary" value="Resolve"/></form></td>
+                    </tr>
+                {/each}
         </table>
+    </div>
+    <div>
+        <A230Map></A230Map>
     </div>
     <div id="map"></div>
     <style>
@@ -158,35 +170,27 @@
         top: -20px;
         }
     </style>
-    <div class="horizontalContainer">
+    <div class="flex flex-col md:flex-row">
         <TurbulenceChart></TurbulenceChart>
         <HumidityChart></HumidityChart>
         <TemperatureChart></TemperatureChart>
     </div>
-    <div>
-        <A230Map></A230Map>
-    </div>
-    <button on:click="{setSeat}" value="C17">Seat</button>
 </div>
 
 <style>
     #map {
         height: 500px;
         max-height: 400px;
-        width: 1000px;
+        width: 100%;
         border-radius: 10px;
         margin: 20px auto;
-    }
-
-    div {
-        display: flex;
-        width: 1000px;
-        margin: auto;
     }
 
     .verticalContainer {
         display: flex;
         flex-direction: column;
+        width:90%;
+        margin:auto;
     }
     .horizontalContainer {
         display: flex;

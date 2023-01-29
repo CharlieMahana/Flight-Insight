@@ -1,6 +1,9 @@
 <script lang="ts">
   import AmericanIcon from "../lib/components/AmericanIcon.svelte";
-  import type { PageData } from "./$types";
+
+  import { signIn, signOut } from "@auth/sveltekit/client";
+    import type { PageData } from "./$types";
+  let isSignIn = true;
 
   export let data: PageData;
 </script>
