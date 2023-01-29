@@ -158,7 +158,7 @@
     <div
         class="flex flex-row-reverse flex-wrap justify-evenly items-center h-full p-6"
     >
-        <div class="w-full lg:max-w-[50vw]">
+        <div class="w-full max-w-[1024px]">
             <div
                 id="map"
                 class="w-full h-64 md:min-h-[80vh] md:h-full  rounded-md place-self-center"
