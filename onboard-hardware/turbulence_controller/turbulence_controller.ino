@@ -1,17 +1,19 @@
 // Demo for getting individual unified sensor data from the MPU6050
 #include <Adafruit_MPU6050.h>
 #include <LiquidCrystal.h>
+#include <dht11.h>
 
 enum CODES { CLEAR, TURBULENT };
 
 Adafruit_MPU6050 mpu;
 Adafruit_Sensor *mpu_accel;
+dht11 DHT11;
 
 float prev_x = 0, prev_y = 0, prev_z = 0;
 int counter_delay = 11;
 
 const int DELAY = 10;
-const int buzzer = 13, rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+const int buzzer = 13, dht = 7, rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void send_serial_data (sensors_event_t* accel) {
@@ -21,6 +23,10 @@ void send_serial_data (sensors_event_t* accel) {
   Serial.print(accel->acceleration.y);
   Serial.print(",");
   Serial.print(accel->acceleration.z);
+  Serial.println();
+  Serial.print(DHT11.humidity);
+  Serial.print(",");
+  Serial.print(DHT11.temperature);
   Serial.println();
 }
 
@@ -73,6 +79,8 @@ void setup(void) {
 }
 
 void loop() {
+  int chk = DHT11.read(dht);
+  
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   mpu_accel->getEvent(&accel);
