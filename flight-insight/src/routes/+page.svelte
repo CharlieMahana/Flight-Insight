@@ -26,7 +26,7 @@
         <form
           class="w-full m-auto justify-center items-center text-center"
           method="GET"
-          action={data.session?.user ? "/flightcrew" : "/dashboard"}
+          action={data.session?.user ? "/flightcrew" : "/preflight"}
         >
           <div class="form-control">
             <div class="input-group">
